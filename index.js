@@ -1,9 +1,23 @@
-const person = {
-    name : 'Tamim',
-    age : 23,
-    height: '5.11"',
-}
+const fs = require('fs');
+const http = require('http')
 
-for (props in person){
-    console.log(props + ": "+person[props]);
-}
+const server = http.createServer((req,res)=>{
+   fs.stat('rename.txt',(err)=>{
+    if(err){
+        res.write(err.message)
+        res.end()
+    }else{
+        fs.unlink('rename.txt',(err)=>{
+            if(err){
+                res.write(err.message);
+            }else{
+                res.write('file delete successfull..');
+            }
+            res.end()
+        })
+    }
+   })
+});
+
+server.listen(5000,'127.0.0.1','');
+console.log('Server Running....');
